@@ -30,3 +30,8 @@ Template/
 *.toc
 *.dvi
 *.eps
+
+#
+*.o
+*.list
+lattice
