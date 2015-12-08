@@ -1,0 +1,32 @@
+# This is gitignore file, Git uses it to determine
+# which files and directories to ignore, before you
+# make a commit
+#
+
+# The directory test
+test*/
+Template/
+
+# The files of Vim
+*~
+*.vim
+*.viminfo
+
+# The executed and mod files of fortran
+*.out
+*.mod
+
+# The data files
+*.dat
+*.txt
+
+# PDF and PS files
+*.pdf
+*.ps
+
+# The files produced by tex
+*.log
+*.aux
+*.toc
+*.dvi
+*.eps
