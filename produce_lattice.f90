@@ -194,7 +194,7 @@ CONTAINS
 					end do
 					do i=1, SubLat
 						do j=1, SubLat
-							dist = cal_distance( tempsite(i)%coord-Site(j,num)%coord )
+							dist = cal_distance( tempsite(j)%coord-Site(i,num)%coord )
 							if( abs(dist-distofsite)<1.d-4 ) then
 								nbcount  = nbcount+1
 								neig(nbcount,1:3) = tempsite(1)%icoord(1:3)
