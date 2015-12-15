@@ -188,7 +188,13 @@ CONTAINS
 					do i=nbincell+1, nbcount
 						if( neig(i,1)==(-ix) .and. neig(i,2)==(-iy) .and. neig(i,3)==(-iz) ) cycle C3
 					end do
-					tempsite(1)%icoord = (/ix,iy,iz/)
+					if( Dimen==1 ) then
+						tempsite(1)%icoord = (/ix,0,0/)
+					else if( Dimen==2 ) then
+						tempsite(1)%icoord = (/ix,iy,0/)
+					else
+						tempsite(1)%icoord = (/ix,iy,iz/)
+					end if
 					do i=1, SubLat
 						tempsite(i)%coord = Site(i,num)%coord+ix*LatVec(1,:)+iy*LatVec(2,:)+iz*LatVec(3,:)
 					end do
@@ -227,30 +233,6 @@ CONTAINS
 		end do
 		if( nbcount /= (NSite*NumNeig/2) ) stop "produce bond wrong"
 		!*********************************************************!
-
-		!call system('rm -f coordinate.list')
-		!open(1,file='coordinate.list',access='append')
-
-		!write(1,*) "{'Interaction': [],"
-		!write(1,*) "'Lines': ["
-		!nbcount = 0
-		!do num=1, NSite/SubLat
-		!	do i=1, nbsum
-		!		ncoord = Site(1,num)%icoord(:)+neig(i,1:3)
-		!		nx = mod(ncoord(1)-1+Lxyz(1), Lxyz(1))+1
-		!		ny = mod(ncoord(2)-1+Lxyz(2), Lxyz(2))+1
-		!		nz = mod(ncoord(3)-1+Lxyz(3), Lxyz(3))+1
-		!		num_n = nx+(ny-1)*Lx+(nz-1)*Lx*Ly
-		!		si = neig(i,4)
-		!		sj = neig(i,5)
-		!		nbcount = nbcount+1
-		!		Bond(nbcount,1) = Site(si,num)%sn
-		!		Bond(nbcount,2) = Site(sj,num_n)%sn
-		!		if( abs(cal_distance(Site(si,num)%coord-Site(sj,num_n)%coord)-distofsite)<1.d-4 ) then
-		!			write(1,'("[(",I4,",",I4,"),",I3,"],")') Bond(nbcount,1)-1, Bond(nbcount,2)-1,0
-		!		end if
-		!	end do
-		!end do
 
 		RETURN
 	END SUBROUTINE pro_bond
@@ -314,7 +296,39 @@ CONTAINS
 		IMPLICIT NONE
 
 		integer              :: i, subi
+		integer              :: s1,s2,sb1,sb2,si1,si2
 		integer, allocatable :: coubond(:) 
+		integer              :: nbcount
+		real                 :: distofsite
+
+		if( SubLat==1 ) then
+			distofsite = cal_distance(LatVec(1,1:3))
+		else
+			distofsite = cal_distance(SubLatVec(2,1:3))
+		end if
+
+		call system('rm -f coordinate.list')
+		open(1,file='coordinate.list',access='append')
+
+		write(1,*) "{'Interaction': [],"
+		write(1,*) "'Lines': ["
+		nbcount = NSite*NumNeig/2
+		do i=1, nbcount
+			s1  = Bond(i,1)
+			s2  = Bond(i,2)
+			si1 = (s1-1)/SubLat+1
+			si2 = (s2-1)/SubLat+1
+			!Site(subi,num)%sn = num*SubLat-SubLat+subi
+			sb1 = mod(s1-1,SubLat)+1
+			sb2 = mod(s2-1,SubLat)+1
+			if( Site(sb1,si1)%sn/=s1 ) stop "s1 wrong"
+			if( Site(sb2,si2)%sn/=s2 ) stop "s2 wrong"
+			if( abs(cal_distance(Site(sb1,si1)%coord-Site(sb2,si2)%coord)-distofsite)<1.d-4 ) then
+				write(1,'("[(",I4,",",I4,"),",I3,"],")') Bond(i,1)-1, Bond(i,2)-1,0
+			end if
+		end do
+		close(1)
+
 
 		open(1,file='coordinate.list',access='append')
 		write(1,*) "'Points': ["
