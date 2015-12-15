@@ -18,6 +18,7 @@ SUBROUTINE chain
 
 	!**** For produce bonds ****!
 	allocate(Bond(NSite*NumNeig/2,2))
+	allocate(Relt(NSite*NumNeig/2,3))
 
 	RETURN
 END SUBROUTINE chain
