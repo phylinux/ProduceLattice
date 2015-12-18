@@ -267,7 +267,7 @@ CONTAINS
 		!**** output sites ****!
 		do i=1, NSite/SubLat
 			do subi=1, SubLat
-				write(1,'(1X,I5,1X,I5,1X,I2,1X,I2,1X,3I2,1X,3F12.6)') &
+				write(1,'(1X,I5,1X,I5,1X,I2,1X,I2,1X,3I4,1X,3F10.4)') &
 					Site(subi,i)%sn, i, subi, Site(subi,i)%tb, Site(subi,i)%icoord(:), Site(subi,i)%coord(:)
 			end do
 		end do
