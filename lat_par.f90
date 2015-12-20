@@ -1,14 +1,15 @@
 
 MODULE lat_par
 	IMPLICIT NONE
-	character(20)        :: NameLat       ! the name of lattice
-	integer              :: Lx, Ly, Lz    ! the size of sublattice
+	character(20)        :: NameLat         ! the name of lattice
+	integer              :: Lx, Ly, Lz      ! the size of sublattice
 	integer              :: Lxyz(3)
 	integer              :: NSite
-	integer              :: Dimen         ! the dimension of lattice
-	integer              :: SubLat        ! the number of sublatties
-	real                 :: LatVec(3,3)   ! basis vector
-	real                 :: SubLatVec(6,3)! basis vector of sublattice
+	integer              :: Dimen           ! the dimension of lattice
+	integer              :: SubLat          ! the number of sublatties
+	real                 :: LatVec(3,3)     ! basis vector
+	real                 :: SubLatVec(6,3)  ! basis vector of sublattice
+	real                 :: RecLatVec(3,3)  ! Reciprocal lattice vector
 
 	type la_si
 		integer          :: sn            ! site number
