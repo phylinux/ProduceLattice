@@ -94,10 +94,10 @@ CONTAINS
 		IMPLICIT NONE
 
 		integer         :: ix, iy, iz
-		integer         :: d
 		integer         :: subi
 		integer         :: num
 		integer         :: bx=1, by=2, bz=4 ! 1:x  2:y  4:z
+		integer         :: i
 
 		if( Dimen==1 ) then
 			bx=1; by=0; bz=0
@@ -106,6 +106,8 @@ CONTAINS
 		else if( Dimen==3 ) then
 			bx=1; by=2; bz=4
 		end if
+
+		call cal_reclatvec
 
 		do iz=1, Lz
 			do iy=1, Ly
@@ -121,16 +123,24 @@ CONTAINS
 						Site(subi,num)%icoord(1)      = ix
 						Site(subi,num)%icoord(2)      = iy
 						Site(subi,num)%icoord(3)      = iz
-						if( ix==1 ) then    ! lie in x
-							Site(subi,num)%tb = Site(subi,num)%tb+bx
-						end if
-						if( iy==1 ) then    ! lie in y
-							Site(subi,num)%tb = Site(subi,num)%tb+by
-						end if
-						if( iz==1 ) then    ! lie in z
-							Site(subi,num)%tb = Site(subi,num)%tb+bz
-						end if
 						Site(subi,num)%sn     = num*SubLat-SubLat+subi
+						!---- boundary sites ----!
+						if( ix==1 ) then    ! lie in x boundary
+							if( abs(dot_product(Site(subi,num)%coord,RecLatVec(1,1:3)))<1.d-5 ) then
+								Site(subi,num)%tb = Site(subi,num)%tb+bx
+							end if
+						end if
+						if( iy==1 ) then    ! lie in y boundary
+							if( abs(dot_product(Site(subi,num)%coord,RecLatVec(2,1:3)))<1.d-5 ) then
+								Site(subi,num)%tb = Site(subi,num)%tb+by
+							end if
+						end if
+						if( iz==1 ) then    ! lie in z boundary
+							if( abs(dot_product(Site(subi,num)%coord,RecLatVec(3,1:3)))<1.d-5 ) then
+								Site(subi,num)%tb = Site(subi,num)%tb+bz
+							end if
+						end if
+						!------------------------!
 					end do
 				end do
 			end do
@@ -180,7 +190,7 @@ CONTAINS
 		if( nbcount/=nbincell ) stop "bond in cell wrong"
 		!---- determine the neighbor between different cell ----!
 		num = NSite/SubLat
-		C1: do iz=-1,1
+		C1: do iz=0,1
 			C2: do iy=-1,1
 				C3: do ix=-1,1
 					if( ix==0 .and. iy==0 .and. iz==0 ) cycle C3
@@ -247,6 +257,38 @@ CONTAINS
 
 		RETURN
 	END FUNCTION cal_distance
+
+	SUBROUTINE cal_reclatvec
+		IMPLICIT NONE
+
+		integer        :: i
+		real           :: rec_vol
+
+		rec_vol = dot_product( LatVec(1,1:3), cross_pro(LatVec(2,1:3),LatVec(3,1:3)) )
+		RecLatVec(1,1:3) = 2.d0*PI*cross_pro(LatVec(2,1:3),LatVec(3,1:3))/rec_vol
+		RecLatVec(2,1:3) = 2.d0*PI*cross_pro(LatVec(3,1:3),LatVec(1,1:3))/rec_vol
+		RecLatVec(3,1:3) = 2.d0*PI*cross_pro(LatVec(1,1:3),LatVec(2,1:3))/rec_vol
+		!write(*,*) rec_vol
+		!write(*,*) RecLatVec(1,1:3), dot_product(RecLatVec(1,1:3),LatVec(2,1:3)), dot_product(RecLatVec(1,1:3),LatVec(3,1:3)), dot_product(RecLatVec(1,1:3),LatVec(1,1:3))
+		!write(*,*) RecLatVec(2,1:3), dot_product(RecLatVec(2,1:3),LatVec(3,1:3)), dot_product(RecLatVec(2,1:3),LatVec(1,1:3)), dot_product(RecLatVec(2,1:3),LatVec(2,1:3))
+		!write(*,*) RecLatVec(3,1:3), dot_product(RecLatVec(3,1:3),LatVec(1,1:3)), dot_product(RecLatVec(3,1:3),LatVec(2,1:3)), dot_product(RecLatVec(3,1:3),LatVec(3,1:3))
+		!stop
+
+		RETURN
+	END SUBROUTINE cal_reclatvec
+
+	FUNCTION cross_pro( vec1, vec2 )
+		IMPLICIT NONE
+
+		real           :: cross_pro(3)
+		real           :: vec1(3), vec2(3)
+
+		cross_pro(1) = vec1(2)*vec2(3)-vec1(3)*vec2(2)
+		cross_pro(2) = vec1(3)*vec2(1)-vec1(1)*vec2(3)
+		cross_pro(3) = vec1(1)*vec2(2)-vec1(2)*vec2(1)
+
+		RETURN
+	END FUNCTION cross_pro
 
 	SUBROUTINE output_lat
 		IMPLICIT NONE
