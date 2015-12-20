@@ -12,10 +12,16 @@ SUBROUTINE square
 	!**** For produce sites ****!
 	LatVec(1,1) = 1.d0
 	LatVec(1,2) = 0.d0
+	LatVec(1,3) = 0.d0
 	LatVec(2,1) = 0.d0
 	LatVec(2,2) = 1.d0
+	LatVec(2,3) = 0.d0
+	LatVec(3,1) = 0.d0
+	LatVec(3,2) = 0.d0
+	LatVec(3,3) = 1.d0
 	SubLatVec(1,1) = 0.d0
 	SubLatVec(1,2) = 0.d0
+	SubLatVec(1,3) = 0.d0
 	allocate(Site(SubLat,NSite/SubLat))
 
 	!**** For produce bonds ****!
