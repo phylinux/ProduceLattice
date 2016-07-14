@@ -42,6 +42,10 @@ INSTALL:
 #	$(FCC) $(DEG) $(MOD) $(OBJS) -o $(TAGE)
 #
 
+tt:
+	#cd test/; ifort -g -o test test.f90 ~/bin/lib/produce_lattice.a
+	cd test/; ifort -g -c test.f90; ifort -g -o test test.o ../*.o
+
 
 clean:
 	rm -f $(MOD) $(OBJS) *.mod

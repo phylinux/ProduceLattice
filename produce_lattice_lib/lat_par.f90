@@ -26,6 +26,7 @@ MODULE lat_par
 	integer, allocatable :: Relt(:,:)     ! bond between i and j, Relt means j is in direction of i Relt(,1:3)
 	integer              :: NumNeig       ! the number of first neighbors
 	integer              :: NumNeig2      ! the number of second neighbors
+	integer              :: NumNeig3      ! the number of third  neighbors
 
 	!==== some constant ====!
 	real, parameter   :: PI    = 3.141592653589d0

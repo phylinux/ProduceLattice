@@ -14,6 +14,8 @@ SUBROUTINE pro_lat(ty,ilx,ily,ilz)
 	call output_lat(1)
 	call second_neighbor(ty)
 	call output_lat(2)
+	call third_neighbor(ty)
+	call output_lat(3)
 	!call output_lat(2)
 	!call output_lat_py
 	!call pl_lat
@@ -97,7 +99,7 @@ SUBROUTINE init_lat(ty,ilx,ily,ilz)
 		stop
 	case (9)
 		call pyrochlore
-		write(*,*) "pyrochlore"
+		write(*,*) "pyrochlore first neighbor"
 	case default
 		print *, "your enter is wrong"
 		stop
@@ -307,7 +309,7 @@ SUBROUTINE second_neighbor(ty)
 		stop
 	case (9)
 		call pyrochlore_second_neighbor
-		write(*,*) "pyrochlore"
+		write(*,*) "pyrochlore second neighor"
 	case default
 		print *, "your enter is wrong"
 		stop
@@ -315,6 +317,55 @@ SUBROUTINE second_neighbor(ty)
 
 	RETURN
 END SUBROUTINE second_neighbor
+
+SUBROUTINE third_neighbor(ty)
+	IMPLICIT NONE
+
+	integer      :: ty
+
+	select case (ty)
+	case (1)
+		!call chain_third_neighbor
+		write(*,*) "chain"
+		stop
+	case (2)
+		!call square_third_neighbor
+		write(*,*) "square"
+		stop
+	case (3)
+		!call triangular_third_neighbor
+		write(*,*) "triangular"
+		stop
+	case (4)
+		!call honeycomb_third_neighbor
+		write(*,*) "honeycomb"
+		stop
+	case (5)
+		!call kagome_third_neighbor
+		write(*,*) "kagome"
+		stop
+	case (6)
+		!call checkerboard_third_neighbor 
+		write(*,*) "checkerboard"
+		stop
+	case (7)
+		!call cubic_third_neighbor
+		write(*,*) "cubic"
+		stop
+	case (8)
+		!call  diamond_third_neighbor
+		write(*,*) "diamond"
+		stop
+	case (9)
+		call pyrochlore_third_neighbor
+		write(*,*) "pyrochlore third neighbor"
+	case default
+		print *, "your enter is wrong"
+		stop
+	end select
+
+	RETURN
+END SUBROUTINE third_neighbor
 
 SUBROUTINE cal_reclatvec
 	use lat_par
@@ -380,6 +431,8 @@ SUBROUTINE output_lat(nflag)
 		bondnum = NSite*NumNeig/2
 	case (2)
 		bondnum = NSite*NumNeig2/2
+	case (3)
+		bondnum = NSite*NumNeig3/2
 	case default
 		stop "err: neighbor"
 	end select
