@@ -15,6 +15,7 @@ Template/
 # The executed and mod files of fortran
 *.out
 *.mod
+*.a
 
 # The data files
 *.dat
@@ -35,3 +36,6 @@ Template/
 *.o
 *.list
 lattice
+
+#
+temp
