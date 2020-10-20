@@ -3,13 +3,13 @@
 SUBROUTINE square
 	IMPLICIT NONE
 
-	NameLat = 'square lattice'
+	NameLat = 'square'
 	Dimen   = 2
 	SubLat  = 1
-	NumNeig = 4
+	Lz      = 1
 	NSite   = Lx*Ly*Lz*SubLat
 
-	!**** For produce sites ****!
+	!-- base vectors and sublattice's vectors --!
 	LatVec(1,1) = 1.d0
 	LatVec(1,2) = 0.d0
 	LatVec(1,3) = 0.d0
@@ -22,11 +22,11 @@ SUBROUTINE square
 	SubLatVec(1,1) = 0.d0
 	SubLatVec(1,2) = 0.d0
 	SubLatVec(1,3) = 0.d0
-	allocate(Site(SubLat,NSite/SubLat))
 
-	!**** For produce bonds ****!
-	allocate(Bond(NSite*NumNeig/2,2))
-	allocate(Relt(NSite*NumNeig/2,3))
+	!-- the n_th neighbor's distance --!
+	NumNeig = (/4,4,4/)
+	NNdt(1) = 1.d0*dsqrt(dot_product(LatVec(1,1:3),LatVec(1,1:3)))
+	NNdt(2) = SQRT2*dsqrt(dot_product(LatVec(1,1:3),LatVec(1,1:3)))
+	NNdt(3) = 2.d0*dsqrt(dot_product(LatVec(1,1:3),LatVec(1,1:3)))
 
-	RETURN
 END SUBROUTINE square

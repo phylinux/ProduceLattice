@@ -3,10 +3,9 @@
 SUBROUTINE pyrochlore
 	IMPLICIT NONE
 
-	NameLat = 'pyrochlore lattice'
+	NameLat = 'pyrochlore'
 	Dimen   = 3
 	SubLat  = 4
-	NumNeig = 6
 	NSite   = Lx*Ly*Lz*SubLat
 
 	!**** For produce sites ****!
@@ -31,11 +30,12 @@ SUBROUTINE pyrochlore
 	SubLatVec(4,1) = 0.5d0
 	SubLatVec(4,2) = 0.d0
 	SubLatVec(4,3) = 0.5d0
-	allocate(Site(SubLat,NSite/SubLat))
 
-	!**** For produce bonds ****!
-	allocate(Bond(NSite*NumNeig/2,2))
-	allocate(Relt(NSite*NumNeig/2,3))
+	!-- the n_th neighbor's distance --!
+	!NumNeig = (/6,12,6/)
+	NumNeig = (/6,12,12/)
+	NNdt(1) = dsqrt(dot_product(SubLatVec(2,1:3),SubLatVec(2,1:3)))
+	NNdt(2) = SQRT3*dsqrt(dot_product(SubLatVec(2,1:3),SubLatVec(2,1:3)))
+	NNdt(3) = 2.d0*dsqrt(dot_product(SubLatVec(2,1:3),SubLatVec(2,1:3)))
 
-	RETURN
 END SUBROUTINE pyrochlore
