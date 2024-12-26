@@ -3,7 +3,7 @@
 SUBROUTINE ruby
 	IMPLICIT NONE
 
-	NameLat = 'kagome'
+	NameLat = 'ruby'
 	Dimen   = 2
 	SubLat  = 6
 	NSite   = Lx*Ly*Lz*SubLat
@@ -13,18 +13,14 @@ SUBROUTINE ruby
 
 	LatVec = 0.d0
 	!-- base vectors and sublattice's vectors --!
-	LatVec(1,1) = 1.d0
-	LatVec(1,2) = 0.d0
-	LatVec(1,3) = 0.d0
-	LatVec(2,1) = 0.5d0
-	LatVec(2,2) = SQRT3/2
-	LatVec(2,3) = 0.d0
-	LatVec(3,1) = 0.d0
-	LatVec(3,2) = 0.d0
-	LatVec(3,3) = 1.d0
-	SubLatVec(1,1) = 0.d0
-	SubLatVec(1,2) = 0.d0
-	SubLatVec(1,3) = 0.d0
-	SubLatVec(2,1:3) = LatVec(1,1:3)/2.d0
-	SubLatVec(3,1:3) = LatVec(2,1:3)/2.d0
+	LatVec(1,1:3) = (/1.d0, 0.d0, 0.d0/)
+	LatVec(2,1:3) = (/0.5d0, SQRT3/2, 0.d0/)
+	LatVec(3,1:3) = (/0.d0, 0.d0, 1.d0/)
+	SubLatVec(1,1:3) = (/0.d0, 1.d0, 0.d0/)
+	SubLatVec(2,1:3) = (/-SQRT3/2.d0,  0.5d0, 0.d0/)
+	SubLatVec(3,1:3) = (/-SQRT3/2.d0, -0.5d0, 0.d0/)
+	SubLatVec(4,1:3) = -SubLatVec(1,1:3)
+	SubLatVec(5,1:3) = -SubLatVec(2,1:3)
+	SubLatVec(6,1:3) = -SubLatVec(3,1:3)
+	SubLatVec = SubLatVec * SQRT3/4.d0
 END SUBROUTINE ruby

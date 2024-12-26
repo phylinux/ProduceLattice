@@ -50,13 +50,13 @@ SUBROUTINE read_parameter
 	case ( 4); call honeycomb
 	case ( 5); call kagome
 	case ( 6); call checkboard; stop
-	case ( 7); call ruby; stop
+	case ( 7); call ruby
 	case ( 8); call cubic
-	case ( 9); call octahedra
+	case ( 9); call octahedra; stop
 	case (10); call pyrochlore
-	case (11); call diamond
-	case (12); call packingAB
-	case (13); call packingABC
+	case (11); call diamond; stop
+	case (12); call packingAB; stop
+	case (13); call packingABC; stop
 	case default
 		print *, "your enter is wrong"
 		stop
