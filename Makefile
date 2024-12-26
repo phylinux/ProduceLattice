@@ -1,33 +1,12 @@
+#FCC=ifort
+#FC=-g -CU -CB
 
-MFile   = produce_lattice
-FModule = lat_par
-PFile   = plotlat
-#Dbug    =
-Dbug    = -g
+FCC=gfortran
+FC=-O0 -fbounds-check -Wuninitialized
 
-$(MFile): $(FModule).o $(MFile).o
-	ifort $(Dbug) $(FModule).o $(MFile).o -o $(MFile)
-
-$(MFile).pl: $(FModule).o $(PFile).o $(MFile).o
-	   ifort $(FModule).o $(PFile).o $(MFile).o -o $(MFile) ~/bin/lib/libvogle.a -lX11
-
-$(FModule).o: $(FModule).f90
-	ifort $(Dbug) -c $(FModule).f90
-
-$(PFile).o: $(PFile).f90
-	ifort $(Dbug) -c $(PFile).f90
-
-$(MFile).o: $(MFile).f90
-	ifort $(Dbug) -c $(MFile).f90
-
-run:
-	./$(MFile)
-
-cpto:
-	cp $(MFile) ~/Documents/Research/WORKS/Hard-Core-Bose-Hubbard-In-Pyrochlore/
-
-.PHONY: clean
+all:
+	$(FCC) $(FC) produce_lattice.f90 -o produce_lattice
+	-rm -f *.mod *.o
 
 clean:
-	-rm *.o *.mod *~ $(MFile)
-	-rm *.dat *.list lattice
+	rm -f *.mod produce_lattice
