@@ -23,8 +23,11 @@ SUBROUTINE packingAB
 
 	! (h/2)^2+(1/sqrt(3))^2<1
 	! h < sqrt(8/3)=1.633  && 1.0 < h
-	! A-A: nearest neighbor;  A-B: next nearest neighbor
+	! A-B: nearest neighbor;  A-A: next nearest neighbor
 	  height=1.5d0
+
+	! A-B and inter A-A: nearest neighbor;  intra A-A: next nearest neighbor
+	!  height=2.d0/3.d0
 
 	!-- base vectors and sublattice's vectors --!
 	LatVec(1,1) = 1.d0
@@ -44,10 +47,18 @@ SUBROUTINE packingAB
 	SubLatVec(2,3) = height/2.d0
 
 	!-- the n_th neighbor's distance --!
+	! A-B: nearest neighbor;  A-A: next nearest neighbor
 	NumNeig = (/6,6,0/)
 	neighborvec(1:3) = SubLatVec(2,1:3)
 	NNdt(1) = 1.d0*dsqrt(dot_product(neighborvec(1:3),neighborvec(1:3)))
 	neighborvec(1:3) = LatVec(2,1:3)
 	NNdt(2) = 1.d0*dsqrt(dot_product(neighborvec(1:3),neighborvec(1:3)))
+
+	!! A-B and inter A-A: nearest neighbor;  intra A-A: next nearest neighbor
+	!NumNeig = (/8,6,0/)
+	!neighborvec(1:3) = SubLatVec(2,1:3)
+	!NNdt(1) = 1.d0*dsqrt(dot_product(neighborvec(1:3),neighborvec(1:3)))
+	!neighborvec(1:3) = LatVec(2,1:3)
+	!NNdt(2) = 1.d0*dsqrt(dot_product(neighborvec(1:3),neighborvec(1:3)))
 
 END SUBROUTINE packingAB

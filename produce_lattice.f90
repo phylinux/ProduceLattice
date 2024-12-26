@@ -28,6 +28,7 @@ CONTAINS
 	INCLUDE "pyrochlore.f90"         !  9
 	INCLUDE "diamond.f90"            ! 10
 	INCLUDE "packingAB.f90"          ! 11
+	INCLUDE "packingABC.f90"         ! 12
 	INCLUDE "produce_bond.f90"
 	INCLUDE "calculation.f90"
 	INCLUDE "output_lat.f90"
@@ -58,6 +59,7 @@ CONTAINS
 		LatVec    = 0.d0
 		SubLatVec = 0.d0
 		Lxyz      = (/Lx,Ly,Lz/)
+		NumNeig = 0
 
 		select case (laty)
 		case ( 1); call chain
@@ -71,6 +73,7 @@ CONTAINS
 		case ( 9); call pyrochlore
 		case (10); call diamond
 		case (11); call packingAB
+		case (12); call packingABC
 		case default
 			print *, "your enter is wrong"
 			stop

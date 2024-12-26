@@ -13,6 +13,7 @@ SUBROUTINE produce_bond
 	case ( 9); call produce_bond_general              ! pyrochlore
 	case (10); call produce_bond_general              ! diamond
 	case (11); call produce_bond_general              ! packingAB
+	case (12); call produce_bond_general              ! packingABC
 	end select
 END SUBROUTINE produce_bond
 
@@ -143,6 +144,11 @@ SUBROUTINE produce_bond_general
 	end do
 	if( nbcount /= (NSite*NumNeig(nr)/2) ) stop "produce bond wrong"
 	!-------------------------------------------------------!
+	open(1,file="neig.txt",access="append")
+	do i=1, nbsum
+		write(1,'(I4,I4,3I4,2I4)') nr, i, neig(nr,i,1:3), neig(nr,i,4:5) 
+	end do
+	close(1)
 	end do C0
 
 END SUBROUTINE produce_bond_general
